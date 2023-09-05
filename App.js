@@ -15,7 +15,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TabNavigation from './src/navigations/Tab';
 import SplashScreen from 'react-native-splash-screen';
-// import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import {
   SafeAreaView,
@@ -43,20 +42,11 @@ const App = () => {
       setTimeout(() => {
         SplashScreen.hide();
       }, 1500);
-
-      // googleSigninConfigure();
-      
     } catch(e) {
       console.warn('Error Occured');
       console.warn(e);
     }
   });
-
-  // const googleSigninConfigure = () => {
-  //   GoogleSignin.configure({
-  //     webClientId : '243453934490-gv7b4okfk1h3fu7lm00d9hscchv685st.apps.googleusercontent.com'  // Web Client ID
-  //   })
-  // }
 
   return (
     <NavigationContainer>
