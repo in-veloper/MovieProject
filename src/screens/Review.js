@@ -19,9 +19,6 @@ const styles = StyleSheet.create({
       backgroundColor: 'transparent',
       flexDirection: 'column'
     },
-    case1: {
-      marginTop : 40
-    },
     case2: {
       backgroundColor: 'transparent',
     },

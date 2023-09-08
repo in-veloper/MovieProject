@@ -1,15 +1,14 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, FlatList, StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Image, Dimensions, FlatList, StatusBar, TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image'; // FastImage 라이브러리 추가
 import styled from 'styled-components/native';
+import axios from 'axios';
+
+const API_KEY = 'd9bc45137ad3d4468ecd3d59bf553f9f';
+const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&page=1`;
 
 const { width } = Dimensions.get('window');
 const itemWidth = width / 3.2;
-
-const movieData = [
-    { id: '1', image: 'https://cdn.rnx.kr/news/photo/202005/105545_121293_640.jpg' },
-    { id: '2', image: 'https://mblogthumb-phinf.pstatic.net/data28/2007/12/29/113/1_busstop138.jpg?type=w420' },
-    { id: '3', image: 'https://img.fruugo.com/product/2/44/14488442_max.jpg' }
-]
 
 const Container = styled.View`
     flex: 1;
@@ -26,31 +25,30 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
     },
-    case1: {
+    headerView: {
         height: 80,
         backgroundColor: 'lightgray',
     },
-    case2: {
-        height: 200,
+    movieView: {
         backgroundColor: 'transparent',
-    },
-    case3: {
-        backgroundColor: 'blue',
-    },
-    case4: {
-        height: 110,
-        flexDirection: 'row',
+        paddingLeft: 5,
+        paddingRight: 5,
+        paddingTop: 5
     },
     poster: {
         width: itemWidth,
-        height: 180, 
-        marginVertical: 10,
-        marginHorizontal: 4,
+        height: 160, 
+        marginVertical: -2,
         alignContent: 'center'
     },
     movieContainer: {
-        flexDirection: 'row',
+        // flexDirection: 'row',
+        alignItems: 'center'
     },
+    movieItem: {
+        alignItems: 'center',
+        margin: 5
+    },  
     item: {
         backgroundColor: 'lightblue',
         padding: 15,
@@ -64,30 +62,17 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
     },
     title: {
-        fontSize: 15
+        fontSize: 13,
+        textAlign: 'center',
+        width: 118,
+        marginTop: 5,
+        fontWeight: 'bold'
     },
     reviewContainer: {
         height: 380,
         // marginTop: StatusBar.currentHeight || 0,
     }
-})
-
-// Test Data
-const data = [
-    {
-      id: '1',
-      title: 'First Item',
-    },
-    {
-      id: '2',
-      title: 'Second Item',
-    },
-    {
-      id: '3',
-      title: 'Third Item',
-    },
-    
-];
+});
 
 const Item = ({title}: any) => (
     <View style={styles.item}>
@@ -103,8 +88,35 @@ const MyReviewItem = ({title}: any) => (
 
 const HomeScreen = () => {
 
+    const [movies, setMovies] = useState([]);
+
+    useEffect(() => {
+        console.log('aa')
+        axios.get(API_URL)
+            .then(response => {
+                setMovies(response.data.results);
+                console.log(movies);
+            })
+            .catch(error => {
+                console.log('Error fetching data : ', error);
+            })
+    }, []);
+
+    const MovieItem = ({movie}) => (
+        <TouchableOpacity onPress={() => navigation.navigate('MovieDetail', { movie })}>
+
+        
+
+        <View style={styles.movieItem}>
+            <FastImage source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`, priority: FastImage.priority.normal }} style={styles.poster} resizeMode={FastImage.resizeMode.cover} />
+            <Text style={styles.title}>{movie.title}</Text>
+        </View>
+
+        </TouchableOpacity>
+    )
+
     const renderItem = ({ item }) => (
-        <Image source={{ uri: item.image }} style={styles.poster}/>
+        <MovieItem movie={item} />
     )
 
     const renderReviewItem = ({item}) => (
@@ -115,42 +127,41 @@ const HomeScreen = () => {
         <MyReviewItem title={item.title} />
     );
 
+    const [pageNumber, setPageNumber] = useState(1); // 현재 페이지 번호
+
+    const loadMoreData = () => {
+        const nextPage = pageNumber + 1;
+        const apiUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&page=${nextPage}`;
+      
+        axios.get(apiUrl)
+          .then(response => {
+            const newMovies = response.data.results;
+            setMovies([...movies, ...newMovies]);
+            setPageNumber(nextPage);
+          })
+          .catch(error => {
+            console.log('Error fetching data: ', error);
+        });
+    };
+
+    const handleEndReached = () => {
+        loadMoreData();
+    };
+
     return (
         <View style={styles.container}>
-            <View style={styles.case1}>
-                <Container>
-                    <StyledText>Advertisement</StyledText>
-                </Container>
-            </View>
-            <View style={ styles.case2 }>
+            <View style={ styles.movieView }>
                 <FlatList 
-                    data={ movieData }
-                    renderItem={ renderItem }
-                    keyExtractor={ (item) => item.id }
-                    horizontal
-                    showsHorizontalScrollIndicator={ false }
-                    contentContainerStyle={ styles.movieContainer }
-                />
-            </View>
-            <View style={styles.reviewContainer}>
-                <FlatList 
-                    data={ data }
-                    renderItem={ renderReviewItem }
+                    data={movies}
+                    renderItem={renderItem}
                     keyExtractor={(item) => item.id.toString()}
+                    numColumns={3} // 열의 수를 3으로 설정
+                    showsVerticalScrollIndicator={false} // 수직 스크롤바 비활성화
+                    onEndReached={handleEndReached} // 스크롤이 끝에 도달하면 호출됨
+                    onEndReachedThreshold={0.5} // 스크롤이 화면 하단 10% 지점에서 호출됨
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.movieContainer}
                 />
-            </View>
-            <View style={styles.case4}>
-                <View style={{ backgroundColor : 'transparent', flex: 1 }}>
-                    <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/512/7420/7420629.png'}} style={{ height: 80, width: 100, marginLeft: 15, marginTop: 10 }} />
-                </View>
-                <View style={{ backgroundColor : 'transparent', flex: 2 }}>
-                    <FlatList
-                        data={ data }
-                        renderItem={ renderMyReviewItem }
-                        keyExtractor={ (item) => item.id.toString() }
-                    />
-                    {/* <StyledText>5</StyledText> */}
-                </View>
             </View>
         </View>
     );

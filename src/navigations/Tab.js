@@ -21,7 +21,6 @@ const TabNavigation = () => {
                 component={Home} 
                 options={{
                     title : '홈',
-                    headerShown: false, // 각 페이지의 Header 가리기 위한 설정
                     tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
                     tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
                         <FeatherIcon name="home" color={color} size={size} />
@@ -33,7 +32,6 @@ const TabNavigation = () => {
                 component={Review} 
                 options={{
                     title : '리뷰',
-                    headerShown: false, // 각 페이지의 Header 가리기 위한 설정
                     tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
                     tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
                         <FeatherIcon name="feather" color={color} size={size} />
@@ -45,7 +43,6 @@ const TabNavigation = () => {
                 component={Rank} 
                 options={{
                     title : '랭킹',
-                    headerShown: false, // 각 페이지의 Header 가리기 위한 설정
                     tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
                     tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
                         <MaterialCommunityIcon name="trophy-variant-outline" color={color} size={size} />
@@ -57,7 +54,6 @@ const TabNavigation = () => {
                 component={MyPage} 
                 options={{
                     title : '내 정보',
-                    headerShown: false,
                     tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
                     tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
                         <FeatherIcon name="user" color={color} size={size} />

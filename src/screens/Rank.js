@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
       backgroundColor: 'transparent',
     },
     case1: {
-      flex: 0.29,
+      flex: 0.20,
       backgroundColor: 'transparent',
     },
     case2: {
-      flex: 0.71,
+      flex: 0.80,
       backgroundColor: 'transparent',
     },
     item: {
@@ -94,7 +94,7 @@ const RankScreen = () => {
     return (
         <View style={styles.container}>
             <View style={styles.case1}>
-                <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2633/2633865.png'}} style={{ height: 80, width: 100, marginLeft: 143, marginTop: 60 }} />
+                <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2633/2633865.png'}} style={{ height: 80, width: 100, marginLeft: 143, marginTop: 20 }} />
             </View>
             <View style={styles.case2}>
                 <FlatList 
