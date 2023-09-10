@@ -3,9 +3,10 @@ import { StyleSheet, View, Text, Image, Dimensions, FlatList, StatusBar, Touchab
 import FastImage from 'react-native-fast-image'; // FastImage 라이브러리 추가
 import styled from 'styled-components/native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 const API_KEY = 'd9bc45137ad3d4468ecd3d59bf553f9f';
-const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&page=1`;
+// const API_URL = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&page=1`;
 
 const { width } = Dimensions.get('window');
 const itemWidth = width / 3.2;
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     },
     poster: {
         width: itemWidth,
-        height: 160, 
+        height: 173, 
         marginVertical: -2,
         alignContent: 'center'
     },
@@ -86,13 +87,24 @@ const MyReviewItem = ({title}: any) => (
     </View>
 )
 
-const HomeScreen = () => {
+const HomeScreen = ({ sortOption }) => {
+    const navigation = useNavigation();
 
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        console.log('aa')
-        axios.get(API_URL)
+
+        let apiUrl;
+
+        if(sortOption === 'Latest') {
+            apiUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=ko-KR&page=1`;
+        }else if(sortOption === 'Top Rated') {
+            apiUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=ko-KR&page=1`;
+        } else {
+            apiUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&page=1`;
+        }
+
+        axios.get(apiUrl)
             .then(response => {
                 setMovies(response.data.results);
                 console.log(movies);
@@ -100,18 +112,15 @@ const HomeScreen = () => {
             .catch(error => {
                 console.log('Error fetching data : ', error);
             })
-    }, []);
+    }, [sortOption]);
 
     const MovieItem = ({movie}) => (
-        <TouchableOpacity onPress={() => navigation.navigate('MovieDetail', { movie })}>
-
-        
-
-        <View style={styles.movieItem}>
-            <FastImage source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`, priority: FastImage.priority.normal }} style={styles.poster} resizeMode={FastImage.resizeMode.cover} />
-            <Text style={styles.title}>{movie.title}</Text>
-        </View>
-
+        // <TouchableOpacity onPress={() => navigation.navigate('MovieDetail', { movie })}>
+        <TouchableOpacity onPress={ () => handleMoviePress(movie)}>
+            <View style={styles.movieItem}>
+                <FastImage source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`, priority: FastImage.priority.normal }} style={styles.poster} resizeMode={FastImage.resizeMode.cover} />
+                <Text style={styles.title}>{movie.title}</Text>
+            </View>
         </TouchableOpacity>
     )
 
@@ -131,7 +140,12 @@ const HomeScreen = () => {
 
     const loadMoreData = () => {
         const nextPage = pageNumber + 1;
-        const apiUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&page=${nextPage}`;
+        const apiUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&page=${nextPage}`; // 인기도순
+        // https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=ko-KR&page=${nextPage}    // 최신순
+        // https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=ko-KR&page=${nextPage}  // 높은 평점순
+
+
+
       
         axios.get(apiUrl)
           .then(response => {
@@ -148,6 +162,11 @@ const HomeScreen = () => {
         loadMoreData();
     };
 
+    // 포스터 클릭 시 영화 상세 정보 페이지로 이동
+    const handleMoviePress = (movie) => {
+        navigation.navigate('MovieDetail', { movie });  // 'MovieDetail'은 상세 정보 페이지의 이름, 'movie'는 전달할 데이터
+    };
+  
     return (
         <View style={styles.container}>
             <View style={ styles.movieView }>
