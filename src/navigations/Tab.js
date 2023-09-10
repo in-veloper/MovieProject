@@ -14,10 +14,20 @@ import MyPage from '../screens/MyPage';
 import MovieDetail from '../screens/MovieDetail';
 import { TouchableOpacity, Text, View, Modal, StyleSheet, Dimensions } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
+import { useNavigation } from '@react-navigation/native'; // useNavigation 추가
+import StackNavigator from './StackNavigator';
+
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
+
+    const navigation = useNavigation(); // navigation 객체 가져오기
+
+    // 뒤로가기 버튼을 눌렀을 때 Home 화면으로 이동하는 함수
+    const goBackToHome = () => {
+        navigation.goBack(); // 뒤로가기
+    };
 
     const [sortOption, setSortOption] = useState('Popular');
 
@@ -30,8 +40,6 @@ const TabNavigation = () => {
         <Tab.Navigator>
             <Tab.Screen 
                 name='Home' 
-                // component={Home} 
-                component={() => <Home sortOption={sortOption} />}  // sortOption을 Home 컴포넌트로 전달
                 options={{
                     headerLeft: ({onPress}) => (
                         <SortDropdown
@@ -47,7 +55,7 @@ const TabNavigation = () => {
                     headerRight: ({onPress}) => (
                         <TouchableOpacity style={{ flexDirection: 'row' }}>
                             <FeatherIcon name='search' size={20} style={{ marginRight: 10 }}/>
-                            <FeatherIcon name='bell' size={20} style={{ marginRight: 10 }} />
+                            <FeatherIcon name='bell' size={20} style={{ marginRight: 10, marginTop: 1 }} />
                         </TouchableOpacity>
                     ),
                     title : '홈',
@@ -56,11 +64,18 @@ const TabNavigation = () => {
                         <FeatherIcon name="home" color={color} size={size} />
                     )
                 }}
-            />
+            >
+            {() => <Home sortOption={sortOption} />}  
+            </Tab.Screen>
             <Tab.Screen 
                 name='Review'
                 component={Review} 
                 options={{
+                    headerRight: ({onPress}) => (
+                        <TouchableOpacity style={{ flexDirection: 'row' }}>
+                            <FeatherIcon name='bell' size={20} style={{ marginRight: 10, marginTop: 1 }} />
+                        </TouchableOpacity>
+                    ),
                     title : '리뷰',
                     tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
                     tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
@@ -83,6 +98,11 @@ const TabNavigation = () => {
                 name='MyPage' 
                 component={MyPage} 
                 options={{
+                    headerRight: ({onPress}) => (
+                        <TouchableOpacity style={{ flexDirection: 'row' }}>
+                            <AntDesignIcon name='setting' size={20} style={{ marginRight: 10, marginTop: 1 }} />
+                        </TouchableOpacity>
+                    ),
                     title : '내 정보',
                     tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
                     tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
@@ -93,10 +113,12 @@ const TabNavigation = () => {
             <Tab.Screen 
                 name='MovieDetail' // MovieDetail 스크린 추가
                 component={MovieDetail} // MovieDetail 스크린을 추가
-                options={{ 
-                    tabBarVisible: false, // 탭 바를 숨길 때 사용 (옵션은 필요에 따라 조정),
+                options={({ route }) => ({
+                    title: '영화 상세 정보',
+                    tabBarButton: () => null, // 해당 탭을 숨깁니다.
+                    // tabBarStyle: false, // 탭 바를 숨길 때 사용 (옵션은 필요에 따라 조정),
                     headerLeft: ({onPress}) => (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={goBackToHome}>
                             <MaterialIcons name='arrow-back' size={20} style={{ paddingLeft: 15 }}/>
                         </TouchableOpacity>
                     ),
@@ -105,7 +127,7 @@ const TabNavigation = () => {
                             <MaterialCommunityIcon name='heart-outline' size={20} style={{ paddingRight: 15 }}/>
                         </TouchableOpacity>
                     )
-                }}
+                })}
             />
         </Tab.Navigator>
     );
@@ -122,7 +144,7 @@ const SortDropdown = ({ sortOption, handleSortOptionChange }) => {
         dropdownStyle={styles.dropdownStyle}
       >
         <View style={styles.dropdownContent}>
-          <Text style={{ fontSize : 13}}>{sortOption}</Text>
+          <Text style={{ fontSize : 15, fontWeight: 'bold'}}>{sortOption}</Text>
           <FeatherIcon name='chevron-down' size={20} />
         </View>
       </ModalDropdown>

@@ -144,9 +144,6 @@ const HomeScreen = ({ sortOption }) => {
         // https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=ko-KR&page=${nextPage}    // 최신순
         // https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=ko-KR&page=${nextPage}  // 높은 평점순
 
-
-
-      
         axios.get(apiUrl)
           .then(response => {
             const newMovies = response.data.results;

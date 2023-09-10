@@ -15,6 +15,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import TabNavigation from './src/navigations/Tab';
 import SplashScreen from 'react-native-splash-screen';
+import StackNavigator from './src/navigations/StackNavigator';
 
 import {
   SafeAreaView,
