@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { Button } from 'react-native-elements';
+import { useAuth } from '../context/AuthContext';
 
 const { width } = Dimensions.get('window'); // 화면 너비 가져오기
 
@@ -84,6 +85,11 @@ return (
     );
 };
 const MyPageScreen = () => {
+    const { userInfo, logout } = useAuth(); // useAuth 훅 사용
+
+    useEffect(() => {
+
+    }, []);
 
     const handleMenuItemPress = (label) => {
         // 각 메뉴 클릭 시 실행할 동작 추가
@@ -95,7 +101,7 @@ const MyPageScreen = () => {
             <View style={styles.case1}>
                 <View style={{flexDirection: 'row'}}>
                     <Ionicon name='person-circle-outline' style={{ fontSize: 30, marginLeft: -10 }}></Ionicon>
-                    <Text style={{ marginLeft: 10, marginTop: 7 }}>접속한 사용자</Text>
+                    <Text style={{ marginLeft: 10, marginTop: 7 }}>{userInfo.user.name}</Text>
                 </View>
                 <Button title='프로필' type='outline' buttonStyle={{ borderColor: 'black', backgroundColor: 'transparent' }} titleStyle={{ color: 'black', fontSize: 13 }} />
             </View>

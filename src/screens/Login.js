@@ -2,15 +2,18 @@ import React from 'react';
 import { View, Button } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext'; // AuthContext에서 useAuth 임포트
 
 function LoginScreen() {
   const navigation = useNavigation();
+  const { login } = useAuth(); // useAuth 훅 사용
 
   const handleGoogleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-
+      
+      login(userInfo);
       // 로그인 성공 시 Home 화면으로 이동
       navigation.navigate('TabNavigation');
     } catch (error) {

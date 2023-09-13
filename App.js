@@ -7,6 +7,9 @@ import TabNavigation from './src/navigations/Tab';
 import SplashScreen from 'react-native-splash-screen';
 import StackNavigator from './src/navigations/StackNavigator';
 import LoginScreen from './src/screens/Login';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './src/screens/Home';
+import { AuthProvider } from './src/context/AuthContext'; // AuthProvider 임포트
 
 import {
   SafeAreaView,
@@ -25,16 +28,10 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './src/screens/Home';
 
-// const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const App = () => {
-
-  // const isLoggedIn = false;
-  // const isLoggedIn = true;
 
   useEffect(() => {
     try {
@@ -48,18 +45,13 @@ const App = () => {
   });
 
   return (
-    // <NavigationContainer>
-    //   {/* {isLoggedIn ? ( */}
-    //     <TabNavigation />
-    //   {/* ) : ( */}
-    //     {/* <LoginScreen /> */}
-    //   {/* )} */}
-    // </NavigationContainer>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="TabNavigation" component={TabNavigation} />
-      </Stack.Navigator>
+      <AuthProvider>
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="TabNavigation" component={TabNavigation} />
+          </Stack.Navigator>
+      </AuthProvider>
     </NavigationContainer>
   )
 };
