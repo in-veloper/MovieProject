@@ -36,6 +36,13 @@ const TabNavigation = () => {
         // 여기에서 선택된 정렬 옵션에 따라 API 호출 등의 작업을 수행할 수 있습니다.
     };
 
+    // navigationOptions 설정
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerShown: false, // 헤더를 숨김
+        });
+    }, [navigation]);
+
     return (
         <Tab.Navigator>
             <Tab.Screen 

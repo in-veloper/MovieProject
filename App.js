@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-// Label 숨기기로 bottom-tab 선택시 하단 Text 숨기기 가능
-
 import React, { useEffect } from 'react';
 import type { Node } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -16,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import TabNavigation from './src/navigations/Tab';
 import SplashScreen from 'react-native-splash-screen';
 import StackNavigator from './src/navigations/StackNavigator';
+import LoginScreen from './src/screens/Login';
 
 import {
   SafeAreaView,
@@ -34,10 +25,17 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './src/screens/Home';
 
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const App = () => {
+
+  // const isLoggedIn = false;
+  // const isLoggedIn = true;
+
   useEffect(() => {
     try {
       setTimeout(() => {
@@ -50,8 +48,18 @@ const App = () => {
   });
 
   return (
+    // <NavigationContainer>
+    //   {/* {isLoggedIn ? ( */}
+    //     <TabNavigation />
+    //   {/* ) : ( */}
+    //     {/* <LoginScreen /> */}
+    //   {/* )} */}
+    // </NavigationContainer>
     <NavigationContainer>
-      <TabNavigation />
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="TabNavigation" component={TabNavigation} />
+      </Stack.Navigator>
     </NavigationContainer>
   )
 };
