@@ -9,7 +9,7 @@ import StackNavigator from './src/navigations/StackNavigator';
 import LoginScreen from './src/screens/Login';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/screens/Home';
-import { AuthProvider } from './src/context/AuthContext'; // AuthProvider 임포트
+import { AuthProvider, useAuth } from './src/context/AuthContext'; // AuthProvider 임포트
 
 import {
   SafeAreaView,
@@ -47,13 +47,24 @@ const App = () => {
   return (
     <NavigationContainer>
       <AuthProvider>
-          <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="TabNavigation" component={TabNavigation} />
-          </Stack.Navigator>
+          <AppNavigator />
       </AuthProvider>
     </NavigationContainer>
   )
+};
+
+const AppNavigator = () => {
+  const { userInfo } = useAuth();
+
+  return (
+    <Stack.Navigator>
+      {userInfo ? ( // 로그인 상태에 따라 화면을 렌더링
+        <Stack.Screen name="TabNavigation" component={TabNavigation} />
+      ) : (
+        <Stack.Screen name="Login" component={LoginScreen} />
+      )}
+    </Stack.Navigator>
+  );
 };
 
 export default App;
