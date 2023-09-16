@@ -103,7 +103,7 @@ const MyPageScreen = () => {
                     <Ionicon name='person-circle-outline' style={{ fontSize: 30, marginLeft: -10 }}></Ionicon>
                     <Text style={{ marginLeft: 10, marginTop: 7 }}>{userInfo.user.name}</Text>
                 </View>
-                <Button title='프로필' type='outline' buttonStyle={{ borderColor: 'black', backgroundColor: 'transparent' }} titleStyle={{ color: 'black', fontSize: 13 }} />
+                <Button title='프로필' type='outline' buttonStyle={{ borderColor: 'black', backgroundColor: 'transparent', width: 80 }} titleStyle={{ color: 'black', fontSize: 13 }} />
             </View>
             <View style={styles.menuContainer}>
                 <MenuGroup
@@ -134,6 +134,7 @@ const MyPageScreen = () => {
                 />
                 <View style={styles.bottomLine}></View>
             </View>
+            <Button title='로그아웃' type='outline' buttonStyle={{ borderColor: 'black', backgroundColor: 'transparent', width: 80 }} titleStyle={{ color: 'black', fontSize: 13 }} />
         </View>
     );
 };

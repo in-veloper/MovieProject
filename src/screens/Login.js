@@ -1,8 +1,11 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, TouchableOpacity, Text, Image } from 'react-native';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext'; // AuthContext에서 useAuth 임포트
+// import Icon from 'react-native-vector-icons/FontAwesome'; 
+import googleIcon from '../assets/image/google_icon.png';
+
 
 function LoginScreen() {
   const navigation = useNavigation();
@@ -38,12 +41,14 @@ function LoginScreen() {
 
     return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <GoogleSigninButton
-        style={{ width: 192, height: 48 }}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
+      <TouchableOpacity
+        style={{ width: 192, height: 48, borderColor: 'gray', backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}
         onPress={handleGoogleSignIn}
-      />
+      >
+        <Image source={googleIcon} style={{ height: 20, width: 20 }}/>
+        {/* <Icon name="google" size={24} style={{ marginRight: 10 }} /> */}
+        <Text style={{ color: 'black', marginLeft: 20 }}>구글 계정으로 로그인</Text>
+      </TouchableOpacity>
     </View>
   );
 }
