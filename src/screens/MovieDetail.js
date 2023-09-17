@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image'; // FastImage 라이브러리 추가
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 const MovieDetail = ({ route }) => {
   const { movie } = route.params;
@@ -31,7 +33,13 @@ const MovieDetail = ({ route }) => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <KeyboardAwareScrollView
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+      extraScrollHeight={30} // 조정이 필요한 부분입니다.
+      keyboardShouldPersistTaps="handled"
+    >
+    {/* <ScrollView style={styles.container}> */}
         {/* 영화 포스터 */}
         <View style={styles.imageContainer}>
             <FastImage
@@ -49,22 +57,24 @@ const MovieDetail = ({ route }) => {
         {/* 영화 평 등록창 */}
         <View style={styles.reviewContainer}>
             <TextInput
-            style={styles.reviewInput}
-            placeholder="영화 평을 입력하세요"
-            multiline
-            value={review}
-            onChangeText={(text) => setReview(text)}
+              style={styles.reviewInput}
+              placeholder="영화 평을 입력하세요"
+              multiline
+              value={review}
+              onChangeText={(text) => setReview(text)}
             />
             <TouchableOpacity style={styles.submitButton} onPress={submitReview}>
                 <Text style={styles.submitButtonText}>등록</Text>
             </TouchableOpacity>
         </View>
-    </ScrollView>
+    {/* </ScrollView> */}
+    </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
@@ -95,27 +105,29 @@ const styles = StyleSheet.create({
     paddingBottom: 50
   },
   reviewInput: {
-    height: 30,
+    height: 35,
     width: 280,
+    textAlignVertical: 'center',
     borderColor: '#ccc',
     borderWidth: 1,
     paddingHorizontal: 10,
-    marginBottom: 2,
-    marginRight: 10
+    marginRight: 10,
+    paddingTop: 8
   },
   submitButton: {
     backgroundColor: 'white',
-    borderColor: 'black',
+    borderColor: 'lightgray',
+    borderWidth: 1,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 5,
+    borderRadius: 3,
     alignSelf: 'flex-end',
     marginTop: -10,
   },
   submitButtonText: {
     color: 'black',
     fontWeight: 'bold',
-  },
+  }
 });
 
 export default MovieDetail;

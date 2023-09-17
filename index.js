@@ -9,7 +9,7 @@ import {name as appName} from './app.json';
 
 // Google Sign-In 초기화
 GoogleSignin.configure({
-    webClientId: '302854401220-m8oofl78s2r63imd9ktnm73m7tv43i8h.apps.googleusercontent.com',
+    webClientId: '779531061196-8tu7m6rjcv1smpbo6ki7g5qpn1e94805.apps.googleusercontent.com',
 });
 
 AppRegistry.registerComponent(appName, () => App);

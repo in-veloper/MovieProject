@@ -1,16 +1,16 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: 'AIzaSyDV95LLXnl2H18emKI-BCymT-dRc3RsXWs',
-    authDomain: 'movieproject-1acf8.firebaseapp.com',
-    projectId: 'movieproject-1acf8',
-    storageBucket: 'movieproject-1acf8.appspot.com',
-    messagingSenderId: '302854401220',
-    appId: '1:302854401220:ios:c4f3b5f7c2384624cfad91',
+    apiKey: 'AIzaSyA36cEA1ymKOguEyFDUYbUYK3s0KVm6wOk',
+    authDomain: 'movieaword-cd37e.firebaseapp.com',
+    projectId: 'movieaword-cd37e',
+    storageBucket: 'movieaword-cd37e.appspot.com',
+    messagingSenderId: '779531061196',
+    appId: '1:779531061196:ios:88c07e61f4d11f2eae3f69',
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export { db };
+export { db, collection, addDoc };

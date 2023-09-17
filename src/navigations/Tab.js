@@ -12,7 +12,7 @@ import Review from '../screens/Review';
 import Rank from '../screens/Rank';
 import MyPage from '../screens/MyPage';
 import MovieDetail from '../screens/MovieDetail';
-import { TouchableOpacity, Text, View, Modal, StyleSheet, Dimensions } from 'react-native';
+import { TouchableOpacity, Text, View, Modal, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { useNavigation } from '@react-navigation/native'; // useNavigation 추가
 import StackNavigator from './StackNavigator';
@@ -44,99 +44,105 @@ const TabNavigation = () => {
     }, [navigation]);
 
     return (
-        <Tab.Navigator>
-            <Tab.Screen 
-                name='Home' 
-                options={{
-                    headerLeft: ({onPress}) => (
-                        <SortDropdown
-                            sortOption={sortOption}
-                            handleSortOptionChange={handleSortOptionChange}
-                        />
-                    ),
-                    headerTitle: ({children}) => (
-                        <View>
-                            <Text style={{ fontWeight: 'bold', fontSize: 15}}>{children}</Text>
-                        </View>
-                    ),
-                    headerRight: ({onPress}) => (
-                        <TouchableOpacity style={{ flexDirection: 'row' }}>
-                            <FeatherIcon name='search' size={20} style={{ marginRight: 10 }}/>
-                            <FeatherIcon name='bell' size={20} style={{ marginRight: 10, marginTop: 1 }} />
-                        </TouchableOpacity>
-                    ),
-                    title : '홈',
-                    tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
-                    tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
-                        <FeatherIcon name="home" color={color} size={size} />
-                    )
-                }}
-            >
-            {() => <Home sortOption={sortOption} />}  
-            </Tab.Screen>
-            <Tab.Screen 
-                name='Review'
-                component={Review} 
-                options={{
-                    headerRight: ({onPress}) => (
-                        <TouchableOpacity style={{ flexDirection: 'row' }}>
-                            <FeatherIcon name='bell' size={20} style={{ marginRight: 10, marginTop: 1 }} />
-                        </TouchableOpacity>
-                    ),
-                    title : '리뷰',
-                    tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
-                    tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
-                        <FeatherIcon name="feather" color={color} size={size} />
-                    )
-                }}
+        <View style={{flex: 1}}>
+            <StatusBar
+                backgroundColor="transparent" // 상태 바를 투명하게 설정
+                barStyle="dark-content" // 폰트 색상을 검은색으로 설정
             />
-            <Tab.Screen 
-                name='Rank' 
-                component={Rank} 
-                options={{
-                    title : '랭킹',
-                    tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
-                    tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
-                        <MaterialCommunityIcon name="trophy-variant-outline" color={color} size={size} />
-                    )
-                }}
-            />
-            <Tab.Screen 
-                name='MyPage' 
-                component={MyPage} 
-                options={{
-                    headerRight: ({onPress}) => (
-                        <TouchableOpacity style={{ flexDirection: 'row' }}>
-                            <AntDesignIcon name='setting' size={20} style={{ marginRight: 10, marginTop: 1 }} />
-                        </TouchableOpacity>
-                    ),
-                    title : '내 정보',
-                    tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
-                    tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
-                        <FeatherIcon name="user" color={color} size={size} />
-                    )
-                }}
-            />
-            <Tab.Screen 
-                name='MovieDetail' // MovieDetail 스크린 추가
-                component={MovieDetail} // MovieDetail 스크린을 추가
-                options={({ route }) => ({
-                    title: '영화 상세 정보',
-                    tabBarButton: () => null, // 해당 탭을 숨깁니다.
-                    // tabBarStyle: false, // 탭 바를 숨길 때 사용 (옵션은 필요에 따라 조정),
-                    headerLeft: ({onPress}) => (
-                        <TouchableOpacity onPress={goBackToHome}>
-                            <MaterialIcons name='arrow-back' size={20} style={{ paddingLeft: 15 }}/>
-                        </TouchableOpacity>
-                    ),
-                    headerRight: ({onPress}) => (
-                        <TouchableOpacity>
-                            <MaterialCommunityIcon name='heart-outline' size={20} style={{ paddingRight: 15 }}/>
-                        </TouchableOpacity>
-                    )
-                })}
-            />
-        </Tab.Navigator>
+            <Tab.Navigator>
+                <Tab.Screen 
+                    name='Home' 
+                    options={{
+                        headerLeft: ({onPress}) => (
+                            <SortDropdown
+                                sortOption={sortOption}
+                                handleSortOptionChange={handleSortOptionChange}
+                            />
+                        ),
+                        headerTitle: ({children}) => (
+                            <View>
+                                <Text style={{ fontWeight: 'bold', fontSize: 15}}>{children}</Text>
+                            </View>
+                        ),
+                        headerRight: ({onPress}) => (
+                            <TouchableOpacity style={{ flexDirection: 'row' }}>
+                                <FeatherIcon name='search' size={20} style={{ marginRight: 10 }}/>
+                                <FeatherIcon name='bell' size={20} style={{ marginRight: 10, marginTop: 1 }} />
+                            </TouchableOpacity>
+                        ),
+                        title : '홈',
+                        tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
+                        tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
+                            <FeatherIcon name="home" color={color} size={size} />
+                        )
+                    }}
+                >
+                {() => <Home sortOption={sortOption} />}  
+                </Tab.Screen>
+                <Tab.Screen 
+                    name='Review'
+                    component={Review} 
+                    options={{
+                        headerRight: ({onPress}) => (
+                            <TouchableOpacity style={{ flexDirection: 'row' }}>
+                                <FeatherIcon name='bell' size={20} style={{ marginRight: 10, marginTop: 1 }} />
+                            </TouchableOpacity>
+                        ),
+                        title : '리뷰',
+                        tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
+                        tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
+                            <FeatherIcon name="feather" color={color} size={size} />
+                        )
+                    }}
+                />
+                <Tab.Screen 
+                    name='Rank' 
+                    component={Rank} 
+                    options={{
+                        title : '랭킹',
+                        tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
+                        tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
+                            <MaterialCommunityIcon name="trophy-variant-outline" color={color} size={size} />
+                        )
+                    }}
+                />
+                <Tab.Screen 
+                    name='MyPage' 
+                    component={MyPage} 
+                    options={{
+                        headerRight: ({onPress}) => (
+                            <TouchableOpacity style={{ flexDirection: 'row' }}>
+                                <AntDesignIcon name='setting' size={20} style={{ marginRight: 10, marginTop: 1 }} />
+                            </TouchableOpacity>
+                        ),
+                        title : '내 정보',
+                        tabBarActiveTintColor: '#fb8c00',   // 아이콘 클릭 시 활성화 됐을 때 색상
+                        tabBarIcon: ({color, size}) => (    // 각 아이콘 설정
+                            <FeatherIcon name="user" color={color} size={size} />
+                        )
+                    }}
+                />
+                <Tab.Screen 
+                    name='MovieDetail' // MovieDetail 스크린 추가
+                    component={MovieDetail} // MovieDetail 스크린을 추가
+                    options={({ route }) => ({
+                        title: '영화 상세 정보',
+                        tabBarButton: () => null, // 해당 탭을 숨깁니다.
+                        // tabBarStyle: false, // 탭 바를 숨길 때 사용 (옵션은 필요에 따라 조정),
+                        headerLeft: ({onPress}) => (
+                            <TouchableOpacity onPress={goBackToHome}>
+                                <MaterialIcons name='arrow-back' size={20} style={{ paddingLeft: 15 }}/>
+                            </TouchableOpacity>
+                        ),
+                        headerRight: ({onPress}) => (
+                            <TouchableOpacity>
+                                <MaterialCommunityIcon name='heart-outline' size={20} style={{ paddingRight: 15 }}/>
+                            </TouchableOpacity>
+                        ),
+                    })}
+                />
+            </Tab.Navigator>
+        </View>
     );
 };
 
